@@ -11,8 +11,11 @@ import demoFunc #various computational functions
 
 start_time = RunTime.currentTime()#Store script start-time
 
+###################SUBSITUTE Sheet Name & JSONfile/filename#####################
+google_sheet_name = 'your_Gsheet_Name' ####replace
+
     ##Recieve GoogleApp authorization from JSON file stored in directory##
-JSONfilename = 'dummyAuthorization.json' #must match JSON filename
+JSONfilename = 'dummyAuthorization.json' #must match JSON filename ####replace
 scope = ['https://spreadsheets.google.com/feeds']
 credentials = ServiceAccountCredentials.from_json_keyfile_name(JSONfilename, scope)
 gc = gspread.authorize(credentials)
@@ -20,11 +23,12 @@ gc = gspread.authorize(credentials)
 *IMPORTANT STEP: SpreadSheet must be shared(edit perm.) with the 'client_email' within the JSONfile in this case,
 'client_email' = client_email@appspot.gserviceaccount.com
 '''
+#################END############################################################
 
     ##Select Google Spreadsheet/Worksheet and create Worksheets##
 
 ##open spreadsheet by 'title', api supports alternates methods via URL, etc.
-g_sheet = gc.open("your_Gsheet_Name") #Google Sheet filename
+g_sheet = gc.open(google_sheet_name) #Google Sheet filename
 
 ##create worksheet for storing computed data with 51 rows and 4 columns
 if g_sheet.get_worksheet(1) == None: #2nd worksheet(@index=1) doesn't exist, create it
