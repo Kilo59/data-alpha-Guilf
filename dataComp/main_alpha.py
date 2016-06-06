@@ -5,20 +5,20 @@ Goal: Demonstration of gspread api to read data from a Google Spreadsheet, manip
 Stretch Goal: Multiple computational examples (Biology relavant), calculate compute time (append to Gsheet)
 '''
 import gspread  #api to interface with Google Sheets
-import csv #for reading and writing .csv files
 from oauth2client.service_account import ServiceAccountCredentials #to authorize GAPP access
-import RunTime #to calculate script run-time
-import demoFunc #various computational functions
+from functANDtests import RunTime #to calculate script run-time
+from functANDtests import demoFunc #various computational functions
+from functANDtests import dataIO #for data input/Output
 
 start_time = RunTime.currentTime()#Store script start-time
 
 ###################SUBSITUTE Sheet Name & JSONfile/filename#####################
 google_sheet_name = 'your_Gsheet_Name' #****************************************REPLACE*
-
+google_sheet_name = 'CAPSTONEgspread'
 
     ##Recieve GoogleApp authorization from JSON file stored in directory##
 JSONfilename = 'dummyAuthorization.json' #must match JSON filename**************REPLACE*
-
+JSONfilename = 'Authorization.json'
 
 scope = ['https://spreadsheets.google.com/feeds']
 credentials = ServiceAccountCredentials.from_json_keyfile_name(JSONfilename, scope)
