@@ -1,7 +1,7 @@
 # data-alpha-Guilf
 
 ##Description and Scope of Independent Study:
-Create a Bioinformatic(Genomic?)/data processing/analytics platform to process/compute data stored in Google Cloud Applications and output to Web-based interactive front end.  
+Create a Bioinformatic(Genomic?)/data, processing/analytics platform to process/compute data stored in Google Cloud Applications and output to Web-based interactive front end.  
 ##Methods and Materials to be Used:
 Python/R for data processing/analysis and HTML, CSS, JavaScript/Jquery for Web Front End. Genomic and/or ELISA derived datasets.
 ##Form of Completed Work:
