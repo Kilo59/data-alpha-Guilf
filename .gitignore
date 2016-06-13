@@ -1,3 +1,4 @@
 dataComp/Authorization.json
 *.pyc
 dataComp/functANDtests/Python_to_R_test.py
+dataComp/__pycache__
