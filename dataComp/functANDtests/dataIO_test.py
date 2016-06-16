@@ -32,8 +32,8 @@ dataIO.csv_dialect()
 skiped_row = dataIO.skipRows_CSV_reader("raw_plate_reader.csv", 2)
 col_header = dataIO.firstRow_CSV_reader("raw_plate_reader.csv")
 csv_list = dataIO.readAll_CSV_reader("raw_plate_reader.csv")
-col1 = dataIO.singleCol_CSV_reader("raw_plate_reader.csv")
+#col1 = dataIO.singleCol_CSV_reader("raw_plate_reader.csv")
 
-
+print(col1)
 print(col_header)
 print(skiped_row)

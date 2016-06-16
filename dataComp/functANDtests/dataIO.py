@@ -10,7 +10,8 @@ def firstRow_CSV_reader(string_filename):
         row_1_list = reader1.__next__()
     return row_1_list
 
-#not fucntional
+#not funtional
+'''
 def singleCol_CSV_reader(string_filename):
     csv_as_list = []
     with open(string_filename, newline='') as csvfile:
@@ -18,7 +19,7 @@ def singleCol_CSV_reader(string_filename):
         for i in reader1:
             csv_as_list.append(i)
     return csv_as_list
-
+'''
 def skipRows_CSV_reader(string_filename, num_skiped_rows):
     csv_as_list = []
     with open(string_filename, newline='') as csvfile:
