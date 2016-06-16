@@ -17,7 +17,11 @@ google_sheet_name = 'your_Gsheet_Name' #****************************************
 google_sheet_name = 'CAPSTONEgspread'
 
     ##Recieve GoogleApp authorization from JSON file stored in directory##
+<<<<<<< HEAD:dataComp/main_alpha.py
+JSONfilename = 'your_JSONAuthorization.json' #must match JSON filename**************REPLACE*
+=======
 JSONfilename = 'dummyAuthorization.json' #must match JSON filename**************REPLACE*
+>>>>>>> refs/remotes/origin/master:dataComp/main_alpha.py
 JSONfilename = 'Authorization.json'
 
 scope = ['https://spreadsheets.google.com/feeds']
