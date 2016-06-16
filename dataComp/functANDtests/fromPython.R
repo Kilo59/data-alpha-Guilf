@@ -3,7 +3,7 @@
 myArgs <- commandArgs(trailingOnly = TRUE)
 
 # Convert to numerics
-data_list = as.numeric(myArgs)
+nums = as.numeric(myArgs)
 
 # cat will write the result to the stdout stream
-cat(max(nums))
+cat(max(1,2,3))
