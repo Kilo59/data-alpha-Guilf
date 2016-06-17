@@ -28,7 +28,7 @@ cmd = [command, path2script] + args
 print(cmd)
 
 #check_output will run command and store to result
-x = subprocess.check_output(cmd, universal_newlines=True, shell=True )
+x = subprocess.check_output(cmd, universal_newlines=True) #shell=True unecessary?
 
 print('The maximum of the numbers is:', x)
 
