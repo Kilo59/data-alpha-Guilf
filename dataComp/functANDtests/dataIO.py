@@ -1,7 +1,25 @@
 #dataIO
 import csv
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials #to authorize GAPP access
 
-#Input/Output
+############Remote Input/Output#######
+
+####Google Sheets authorization
+##INCOMPLETE!##
+'''
+class Google_Sheet(object):
+    auth_filename = 'Authorization.json'
+    scope = ['https://spreadsheets.google.com/feeds']
+    credentials = ServiceAccountCredentials.from_json_keyfile_name(auth_filename, scope)
+    gc = gspread.authorize(credentials)
+    def __init__(self, spreadsheet, worksheet):
+        self.spreadsheet = spreadsheet
+        self.worksheet = worksheet
+'''
+##INCOMPLETE!##
+
+#############Local Input/Output######
 
 ####CSV input
 def firstRow_CSV_reader(string_filename):
