@@ -1,4 +1,4 @@
-# data-alpha-Guilf
+# Plate-reader Automated Data Wrangler
 ####Pulling "dummy" data from this [Google Spreadsheet](https://docs.google.com/spreadsheets/d/1u54y6qETcyBdpQM1dJblD_F3TSeZ_qD7RPs5Ne2fPzk/pubhtml?gid=0&single=true "Input Sheet") | [Output](https://docs.google.com/spreadsheets/d/1u54y6qETcyBdpQM1dJblD_F3TSeZ_qD7RPs5Ne2fPzk/pubhtml?gid=1128971629&single=true "Output Sheet")
 
 ##Platform Description/Scope:
