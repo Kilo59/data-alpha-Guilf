@@ -10,5 +10,6 @@ Python/R for data processing/analysis and HTML, CSS, JavaScript/Jquery for Web F
 ##Progress Report Schedule:
 Weekly(bi-weekly) meeting with Faculty advisors to demonstrate progress, refine function. Well documented GitHub repository. Screen captured videos demonstrating/explaining platform functions to supplement face to face meetings.
 
-
+###Plate-reader Wells
+![Well Guide](https://github.com/SpaceTuna8/data-alpha-Guilf/blob/plate_reader/Microplate_simple.PNG?raw=true)
   
