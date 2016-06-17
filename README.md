@@ -11,5 +11,7 @@ Python/R for data processing/analysis and HTML, CSS, JavaScript/Jquery for Web F
 Weekly(bi-weekly) meeting with Faculty advisors to demonstrate progress, refine function. Well documented GitHub repository. Screen captured videos demonstrating/explaining platform functions to supplement face to face meetings.
 
 ###Plate-reader Wells
+####[Well Label Replacement Sheet](https://docs.google.com/spreadsheets/d/1fJhE1hOMqVvf5T8YHxRATOQ8QHKfujZRym2wk-tYq4I/pubhtml)
 ![Well Guide](https://github.com/SpaceTuna8/data-alpha-Guilf/blob/plate_reader/Microplate_simple.PNG?raw=true)
+
   
