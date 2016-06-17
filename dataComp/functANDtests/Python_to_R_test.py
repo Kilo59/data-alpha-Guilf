@@ -19,7 +19,8 @@ args = ['11', '3', '9', '42']
 
 #define command and argument
 command = 'Rscript'
-path2script = current_directory + '\\fromPython.R'
+script = 'fromPython.R'
+path2script = current_directory + '\\' + script
 print(path2script)
 
 #build subprocess command
@@ -34,4 +35,3 @@ print('The maximum of the numbers is:', x)
 '''
 To quote from the documentation: The only time you need to specify shell=True on Windows is when the command you wish to execute is built into the shell (e.g. dir or copy). You do not need shell=True to run a batch file or console-based executable.
 '''
-
