@@ -1,6 +1,10 @@
 import dataIO
+import dataCowboy
+import RunTime
 import random
 import gspread
+from oauth2client.service_account import ServiceAccountCredentials #to authorize GAPP access
+
 
 #Working Sheet Name
 google_sheet_name = 'plate_wells'
@@ -11,6 +15,44 @@ credentials = ServiceAccountCredentials.from_json_keyfile_name(auth_filename, sc
 gc = gspread.authorize(credentials)
 ##open spreadsheet by 'title'
 g_sheet = gc.open(google_sheet_name)
+#setup worksheet variables
+well_labels = g_sheet.worksheet('well_labels')
+
+#count columns
+number_of_cols = well_labels.col_count
+
+####Get All Data####
+get_all_start = RunTime.currentTime()#start-time
+#parse data as lists
+#each row = list
+list_of_lists = well_labels.get_all_values()
+column_list = dataCowboy.pl_rdr_labels(list_of_lists)
+
+get_all_end = RunTime.currentTime()#Store script process_end_time
+get_all_runTime = RunTime.calc_runTime(get_all_start, get_all_end)
+####END Get All####
+
+####Get-By-Column####
+by_col_start = RunTime.currentTime()#start-time
+col_list = []
+for number in range(1,number_of_cols+1):
+    col_list.append(well_labels.col_values(number))
+
+by_col_end = RunTime.currentTime()#Store script process_end_time
+by_col_runTime = RunTime.calc_runTime(by_col_start, by_col_end)
+####END Get-By-Column####
+
+print(get_all_runTime)
+
+print(column_list)
+print(list_of_lists)
+
+print(by_col_runTime)
+print(col_list)
+
+print(len(column_list))
+print(column_list)
+print(number_of_cols)
 
 '''
 col1 = []
