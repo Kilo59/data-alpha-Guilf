@@ -1,5 +1,16 @@
 import dataIO
 import random
+import gspread
+
+#Working Sheet Name
+google_sheet_name = 'plate_wells'
+#Setup GoogleApp Authrization/Credentials
+auth_filename = 'Authorization.json'
+scope = ['https://spreadsheets.google.com/feeds']
+credentials = ServiceAccountCredentials.from_json_keyfile_name(auth_filename, scope)
+gc = gspread.authorize(credentials)
+##open spreadsheet by 'title'
+g_sheet = gc.open(google_sheet_name)
 
 '''
 col1 = []
@@ -23,6 +34,7 @@ dataIO.singleCol_CSV('test1.csv', header_list[0], col1)
 dataIO.doubleCol_CSV('test2.csv', header_list, col_list)
 #dataIO.doubleCol_CSV('errorTest.csv', header_list, unequal_list)
 '''
+
 for number in range(1,5):
     print(number)
 
@@ -32,8 +44,3 @@ dataIO.csv_dialect()
 skiped_row = dataIO.skipRows_CSV_reader("raw_plate_reader.csv", 2)
 col_header = dataIO.firstRow_CSV_reader("raw_plate_reader.csv")
 csv_list = dataIO.readAll_CSV_reader("raw_plate_reader.csv")
-#col1 = dataIO.singleCol_CSV_reader("raw_plate_reader.csv")
-
-print(col1)
-print(col_header)
-print(skiped_row)

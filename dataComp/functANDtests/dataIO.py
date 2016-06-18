@@ -13,9 +13,18 @@ class Google_Sheet(object):
     scope = ['https://spreadsheets.google.com/feeds']
     credentials = ServiceAccountCredentials.from_json_keyfile_name(auth_filename, scope)
     gc = gspread.authorize(credentials)
-    def __init__(self, spreadsheet, worksheet):
+    def __init__(self, spreadsheet, worksheet1):
         self.spreadsheet = spreadsheet
-        self.worksheet = worksheet
+        self.worksheet1 = worksheet1
+
+    def work_sheet(self):
+        g_sheet = gc.open(self.spreadsheet)
+        ws1 = g_sheet.worksheet(self.worksheet1)
+        return ws1
+
+    def count_columns():
+        number_of_columns = work_sheet.col_count
+        return number_of_columns
 '''
 ##INCOMPLETE!##
 
