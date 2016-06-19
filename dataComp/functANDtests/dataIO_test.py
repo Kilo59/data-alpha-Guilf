@@ -32,6 +32,7 @@ get_all_end = RunTime.currentTime()#Store script process_end_time
 get_all_runTime = RunTime.calc_runTime(get_all_start, get_all_end)
 ####END Get All####
 
+'''
 ####Get-By-Column####
 by_col_start = RunTime.currentTime()#start-time
 col_list = []
@@ -41,18 +42,23 @@ for number in range(1,number_of_cols+1):
 by_col_end = RunTime.currentTime()#Store script process_end_time
 by_col_runTime = RunTime.calc_runTime(by_col_start, by_col_end)
 ####END Get-By-Column####
-
-print(get_all_runTime)
-
-print(column_list)
-print(list_of_lists)
-
 print(by_col_runTime)
 print(col_list)
 
+'''
+
+single_list = dataCowboy.pl_rdr_single_list(list_of_lists)
+
+print(list_of_lists)
+
+print(get_all_runTime)
+
 print(len(column_list))
 print(column_list)
-print(number_of_cols)
+
+
+print(single_list)
+
 
 '''
 col1 = []
@@ -76,13 +82,25 @@ dataIO.singleCol_CSV('test1.csv', header_list[0], col1)
 dataIO.doubleCol_CSV('test2.csv', header_list, col_list)
 #dataIO.doubleCol_CSV('errorTest.csv', header_list, unequal_list)
 '''
+print("*"*20)
 
-for number in range(1,5):
-    print(number)
+csv_file = 'raw_plate_reader.csv'
+
+number_of_rows_csv = dataIO.count_rows_CSV(csv_file)
+number_of_cols_csv = dataIO.count_columns_CSV(csv_file)
+
+csv_list_of_lists = dataIO.csv_list_of_lists(csv_file)
+
+d = [[] for x in range(5)]
+print(d)
 
 
-dataIO.csv_dialect()
-
-skiped_row = dataIO.skipRows_CSV_reader("raw_plate_reader.csv", 2)
-col_header = dataIO.firstRow_CSV_reader("raw_plate_reader.csv")
-csv_list = dataIO.readAll_CSV_reader("raw_plate_reader.csv")
+print("CSV Rows: " + str(number_of_rows_csv))
+print('CSV Columns: ' + str(number_of_cols_csv))
+#print(skiped_row)
+#print(col_header)
+print(" ")
+for i in range(len(csv_list_of_lists)):
+    print(csv_list_of_lists[i][0], csv_list_of_lists[i][1:])
+print(csv_list_of_lists[0])
+#print(csv_dictionary.keys())
