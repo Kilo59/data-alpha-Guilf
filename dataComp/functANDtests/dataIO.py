@@ -28,6 +28,25 @@ class Google_Sheet(object):
 
 #############Local Input/Output######
 
+###CSV info gathering
+
+#modified from jamylak @StackOverflow
+def count_rows_CSV(string_filename):
+    with open(string_filename,"r") as f:
+        reader = csv.reader(f,delimiter = ",")
+        data = list(reader)
+        row_count = len(data)
+    return row_count
+
+#modified from mgilson @StackOverflow
+def count_columns_CSV(string_filename):
+    d = ','
+    f=open(string_filename,'r')
+
+    reader0=csv.reader(f,delimiter=d)
+    ncol=len(next(reader0)) # Read first line and count columns
+    return ncol
+
 ####CSV input
 def firstRow_CSV_reader(string_filename):
     with open(string_filename, newline='') as csvfile:
@@ -62,6 +81,19 @@ def readAll_CSV_reader(string_filename):
         for i in reader1:
             csv_as_list.append(i)
     return csv_as_list
+
+def csv_list_of_lists(string_filename):
+    headers = firstRow_CSV_reader(string_filename)
+    with open(string_filename) as csvfile:
+        reader3 = csv.DictReader(csvfile)
+        list1 = [[] for x in range(len(headers))]
+        for ls, header in zip(list1, headers):
+            ls.append(header)
+        for row in reader3:
+            #print(row['Time'], row['Well 101'], row['Well 300'])
+            for col_list in list1:
+                col_list.append(row[col_list[0]])
+    return list1
 
 ####CSV Output
 def singleCol_CSV(string_filename, string_header, item_list):
