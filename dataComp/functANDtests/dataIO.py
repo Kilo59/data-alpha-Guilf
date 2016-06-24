@@ -47,6 +47,10 @@ def count_columns_CSV(string_filename):
     ncol=len(next(reader0)) # Read first line and count columns
     return ncol
 
+def count_rowsXcols(string_filename)
+    result = count_columns_CSV(string_filename) * count_rows_CSV(string_filename)
+    return result
+
 ####CSV input
 def firstRow_CSV_reader(string_filename):
     with open(string_filename, newline='') as csvfile:
