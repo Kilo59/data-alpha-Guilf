@@ -1,6 +1,11 @@
 #DataCowboy.py
 #SpaceTuna8
 
+#Accepts a list of lists and stores every item into their own list.
+#Intended to correspond to the 2 10x10 wells used by the Biocscreen plate reader
+#Although not a requirement for this function the list_of_columns is expected to contain 20 lists with 10 items each)
+#Well numbers should correspond to the plate layout.
+#Top left well = well_1 | bottom left = well_10 | top right = well 91 OR 191 | bottom right = well 100 OR 200
 def pl_rdr_labels(list_of_columns):
     colA = []
     colB = []
