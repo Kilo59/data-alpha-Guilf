@@ -1,7 +1,7 @@
-import dataIO
-import dataCowboy
 import gspread
-import RunTime
+from functANDtests import dataIO
+from functANDtests import dataCowboy
+from functANDtests import RunTime
 from oauth2client.service_account import ServiceAccountCredentials #to authorize GAPP access
 #####|Functions|#####
 def gsheet_update(list_of_lists):
