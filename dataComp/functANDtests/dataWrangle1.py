@@ -227,8 +227,8 @@ def gsheet_update(list_of_lists):
 ##############|Start|##########
 print("dataWrangle1.py")
 print("############|START|##########")
-full_print = False
-full_sheet_update = False
+full_print = True
+full_sheet_update = True
 start_time = RunTime.currentTime()#start-time
 
 #Working Sheet Name
@@ -249,7 +249,8 @@ if g_sheet.get_worksheet(1) == None:
 well_data = g_sheet.worksheet('well_data')
 
 #######Get Well Labels from Google Sheet######################################
-labels = dataCowboy.pl_rdr_single_list(well_labels.get_all_values())#use gspread to collect every cell value in well_wabels workseet, use dataCowboy to store values into a single list of 200 well labels
+labels = dataCowboy.pl_rdr_single_list(well_labels.get_all_values())
+#use gspread to collect every cell value in well_wabels workseet, use dataCowboy to store values into a single list of 200 well labels
 if full_print == True:
     print(labels)
 
@@ -264,7 +265,8 @@ updated_lists = dataCowboy.header_replacement(csv_list_of_lists, labels)
 dataIO.print_data_lists(updated_lists)
 
 #####Update Spreadsheet#####
-gsheet_update(updated_lists)
+if full_sheet_update == True:
+    gsheet_update(updated_lists)
 
 #######| END |########
 end_time = RunTime.currentTime()#start-time
