@@ -122,7 +122,13 @@ def doubleCol_CSV(filename, header_list, list_of_columns):
                 writer2.writerow([ list_of_columns[0][i],list_of_columns[1][i] ])
     return
 
-#misc
+##########|Misc|#################
+
 def csv_dialect():
     print(csv.list_dialects)
+    return
+
+def print_data_lists(list_of_lists):
+    for i in range(len(list_of_lists)):
+        print(list_of_lists[i][0], list_of_lists[i][1:])
     return

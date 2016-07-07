@@ -5,7 +5,6 @@ import random
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials #to authorize GAPP access
 
-
 #Working Sheet Name
 google_sheet_name = 'plate_wells'
 #Setup GoogleApp Authrization/Credentials
@@ -56,7 +55,7 @@ print(len(column_list))
 print(column_list)
 
 
-print(single_list)
+print(len(single_list),single_list)
 
 
 '''
@@ -103,6 +102,9 @@ print(csv_list_of_lists[0])
 ####GoogleSheet Write Test
 sheet_write_start = RunTime.currentTime()#start-time
 print(dataIO.count_rowsXcols(csv_file))
+print("*"*20)
+print("Google Sheet Write Test")
+print("*"*20)
 
 if g_sheet.get_worksheet(1) == None: #2nd worksheet(@index=1) doesn't exist, create it
     g_sheet.add_worksheet('well_data', number_of_rows_csv, number_of_cols_csv)
@@ -315,6 +317,8 @@ GS = well_data.range('GS1:GS256')
 
 A_GS = [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z, AA, AB, AC, AD, AE, AF, AG, AH, AI, AJ, AK, AL, AM, AN, AO, AP, AQ, AR, AS, AT, AU, AV, AW, AX, AY, AZ, BA, BB, BC, BD, BE, BF, BG, BH, BI, BJ, BK, BL, BM, BN, BO, BP, BQ, BR, BS, BT, BU, BV, BW, BX, BY, BZ, CA, CB, CC, CD, CE, CF, CG, CH, CI, CJ, CK, CL, CM, CN, CO, CP, CQ, CR, CS, CT, CU, CV, CW, CX, CY, CZ, DA, DB, DC, DD, DE, DF, DG, DH, DI, DJ, DK, DL, DM, DN, DO, DP, DQ, DR, DS, DT, DU, DV, DW, DX, DY, DZ, EA, EB, EC, ED, EE, EF, EG, EH, EI, EJ, EK, EL, EM, EN, EO, EP, EQ, ER, ES, ET, EU, EV, EW, EX, EY, EZ, FA, FB, FC, FD, FE, FF, FG, FH, FI, FJ, FK, FL, FM, FN, FO, FP, FQ, FR, FS, FT, FU, FV, FW, FX, FY, FZ, GA, GB, GC, GD, GE, GF, GG, GH, GI, GJ, GK, GL, GM, GN, GO, GP, GQ, GR, GS]
 
+well_data_headers = well_data.range("B1:GS1")
+
 enum_list = ['One', 'Two', 'Three']
 
 #enumerate
@@ -333,6 +337,12 @@ for ls_index, (ls, col) in enumerate(zip(csv_list_of_lists, A_GS)):
 
 for col in A_GS:
     well_data.update_cells(col)
+
+#***********Alternative: Insert new headers into lists prior to this step
+#replace headers
+for cell, index in zip(well_data_headers, range(len(single_list))):
+    cell.value = single_list[index]
+well_data.update_cells(well_data_headers)
 
 sheet_write_end = RunTime.currentTime()#end-time
 sheet_write_run_time = RunTime.calc_runTime(sheet_write_start, sheet_write_end)#run-time
