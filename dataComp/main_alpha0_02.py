@@ -219,7 +219,7 @@ def gsheet_update(list_of_lists):
     for ls_index, (ls, col) in enumerate(zip(list_of_lists, A_GS)):
         for cell_index, cell in enumerate(col):
             cell.value = ls[cell_index]
-
+    #update google sheet by column
     for col in A_GS:
         well_data.update_cells(col)
     return
@@ -229,8 +229,19 @@ print("dataWrangle1.py")
 print("############|START|##########")
 full_print = True
 full_sheet_update = True
+Rsub = True
 start_time = RunTime.currentTime()#start-time
 
+##########Get Raw Data-set from Bioscreen CSV file############################
+csv_file = 'raw_plate_reader.csv' #full filename of CSV file stored in working directory
+number_of_rows_csv = dataIO.count_rows_CSV(csv_file)
+number_of_cols_csv = dataIO.count_columns_CSV(csv_file)
+csv_list_of_lists = dataIO.csv_list_of_lists(csv_file) #store data-set by columns as a list of lists
+if full_print == True:
+    dataIO.print_data_lists(csv_list_of_lists)
+##############################################################################
+
+#####|Google Sheet Setup|#####
 #Working Sheet Name
 google_sheet_name = 'plate_wells'
 #Setup GoogleApp Authrization/Credentials
@@ -243,26 +254,40 @@ g_sheet = gc.open(google_sheet_name)
 #setup worksheet variables
 well_labels = g_sheet.worksheet('well_labels')
 #if 2nd worksheet(@index=1) doesn't exist, create it
+#####****************************************>>>>>>>>>CHANGE TO ROWS/COLS OF UPDATED CSV
 if g_sheet.get_worksheet(1) == None:
     g_sheet.add_worksheet('well_data', number_of_rows_csv, number_of_cols_csv)
 #setup well_data worksheet object
 well_data = g_sheet.worksheet('well_data')
+###############################
 
 #######Get Well Labels from Google Sheet######################################
 labels = dataCowboy.pl_rdr_single_list(well_labels.get_all_values())
 #use gspread to collect every cell value in well_wabels workseet, use dataCowboy to store values into a single list of 200 well labels
 if full_print == True:
     print(labels)
+##############################################################################
 
-##########Get Raw Data-set from Bioscreen CSV file############################
-csv_file = 'raw_plate_reader.csv' #full filename of CSV file stored in working directory
-csv_list_of_lists = dataIO.csv_list_of_lists(csv_file) #store data-set by columns as a list of lists
-if full_print == True:
-    dataIO.print_data_lists(csv_list_of_lists)
-
-#####Replace Headers####
+#####Replace Headers#####
 updated_lists = dataCowboy.header_replacement(csv_list_of_lists, labels)
 dataIO.print_data_lists(updated_lists)
+
+###################|Data Validation|####################
+
+########|Python Summary Data|##########
+
+#Dictionary: Min, Max, Range, Mean, Median, Mode
+
+#######################################
+
+########|R subprocess|########
+if Rsub == True:
+    print("Rscript")
+    #to be implemented
+##############################
+
+#######################################################
+
 
 #####Update Spreadsheet#####
 if full_sheet_update == True:
