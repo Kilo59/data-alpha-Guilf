@@ -228,7 +228,7 @@ def gsheet_update(list_of_lists):
 print("dataWrangle1.py")
 print("############|START|##########")
 full_print = True
-full_sheet_update = True
+full_sheet_update = False
 Rsub = True
 start_time = RunTime.currentTime()#start-time
 
@@ -275,9 +275,19 @@ dataIO.print_data_lists(updated_lists)
 ###################|Data Validation|####################
 
 ########|Python Summary Data|##########
-
+#print summary data for every column, skip item 0 (the header)
+print("#|Range |Min  |Max  |Mean |")
+count = 1
+range_list = [0]
+for ls in updated_lists[1:]:
+    range = round(float(max(ls[1:])) - float(min(ls[1:])), 3)
+    mean = round( dataCowboy.list_mean(ls[1:]), 3 )
+    print( count, range, min(ls[1:]), max(ls[1:]), mean )
+    range_list.append(range)
+    count += 1
+print("#|Range |Min  |Max  |Mean |")
+#print(range_list)
 #Dictionary: Min, Max, Range, Mean, Median, Mode
-
 #######################################
 
 ########|R subprocess|########
