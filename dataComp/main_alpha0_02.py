@@ -227,9 +227,13 @@ def gsheet_update(list_of_lists):
 ##############|Start|##########
 print("dataWrangle1.py")
 print("############|START|##########")
-full_print = True
+full_print = False
 full_sheet_update = False
 Rsub = True
+#data must be greater than these values to pass validation
+#Set = 0 to accept all data
+RangeReq = 0.05 #max value - min value
+MaxReq = 0.080
 start_time = RunTime.currentTime()#start-time
 
 ##########Get Raw Data-set from Bioscreen CSV file############################
@@ -270,25 +274,56 @@ if full_print == True:
 
 #####Replace Headers#####
 updated_lists = dataCowboy.header_replacement(csv_list_of_lists, labels)
-dataIO.print_data_lists(updated_lists)
+if full_print == True:
+    dataIO.print_data_lists(updated_lists)
 
 ###################|Data Validation|####################
 
 ########|Python Summary Data|##########
 #print summary data for every column, skip item 0 (the header)
-print("#|Range |Min  |Max  |Mean |")
+print("###|Summary Data|###")
+print("#|Range |Min  |Max  |Mean |First |Last |")
 count = 1
 range_list = [0]
+min_list = [0]
+max_list = [0]
+mean_list = [0]
 for ls in updated_lists[1:]:
-    range = round(float(max(ls[1:])) - float(min(ls[1:])), 3)
+    range_val = round(float(max(ls[1:])) - float(min(ls[1:])), 3)
+    min_val = min(ls[1:])
+    max_val = max(ls[1:])
     mean = round( dataCowboy.list_mean(ls[1:]), 3 )
-    print( count, range, min(ls[1:]), max(ls[1:]), mean )
-    range_list.append(range)
+    first = ls[1]
+    last = ls[len(ls)-1]
+    print( count, range_val, min_val, max_val, mean, '|', first, last )
+    #store summary data in seperate lists for later use in data validation/checking
+    range_list.append(float(range_val))
+    min_list.append(float(min_val))
+    max_list.append(float(max_val))
+    mean_list.append(float(mean))
     count += 1
-print("#|Range |Min  |Max  |Mean |")
-#print(range_list)
-#Dictionary: Min, Max, Range, Mean, Median, Mode
+print("#|Range |Min  |Max  |Mean  |First |Last |")
 #######################################
+
+########|Validation Check|##########
+print("#####|Validation Check|####")
+#store index number of invalid data
+exclude_list = []
+pass_list = []
+if RangeReq > 0 or MaxReq > 0:
+    for index in range(len(range_list)):
+        ##print(index, range_list[index], max_list[index])
+        #skip index = 0
+        if index > 0:
+            if range_list[index] > RangeReq and max_list[index] > MaxReq:
+                ##print(index, "Pass")
+                pass_list.append(index)
+            else:
+                print(index, "Fail")
+                exclude_list.append(index)
+print("Failed Checks:", len(exclude_list))
+##print(exclude_list)
+####################################
 
 ########|R subprocess|########
 if Rsub == True:
