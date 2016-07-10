@@ -4,7 +4,7 @@ from functANDtests import dataCowboy
 from functANDtests import RunTime
 from oauth2client.service_account import ServiceAccountCredentials #to authorize GAPP access
 #####|Functions|#####
-def gsheet_update(list_of_lists):
+def gsheet_update(list_of_lists, num_cols):
     ##Setup sheet write_range
     A = well_data.range('A1:A256')
     B = well_data.range('B1:B256')
@@ -215,34 +215,40 @@ def gsheet_update(list_of_lists):
             EL, EM, EN, EO, EP, EQ, ER, ES, ET, EU, EV, EW, EX, EY, EZ, FA, FB, FC, FD, FE, FF, FG, FH, FI, FJ, FK, FL,
             FM, FN, FO, FP, FQ, FR, FS, FT, FU, FV, FW, FX, FY, FZ, GA, GB, GC, GD, GE, GF, GG, GH, GI, GJ, GK, GL, GM,
             GN, GO, GP, GQ, GR, GS]
+
     # iterate through list_of_lists
-    for ls_index, (ls, col) in enumerate(zip(list_of_lists, A_GS)):
+    #print(len(list_of_lists), len(A_GS[:num_cols]))
+    for ls_index, (ls, col) in enumerate(zip( list_of_lists, A_GS[:num_cols] )):
+        #print('a', ls_index)
         for cell_index, cell in enumerate(col):
             cell.value = ls[cell_index]
     #update google sheet by column
-    for col in A_GS:
+    update_count = 0
+    for col in A_GS[:num_cols]:
+        print('Column', update_count, 'posted')
+        update_count += 1
         well_data.update_cells(col)
     return
 
 ##############|Start|##########
 print("dataWrangle1.py")
 print("############|START|##########")
-full_print = False
-full_sheet_update = False
+full_print = True
+full_sheet_update = True
 Rsub = True
 #data must be greater than these values to pass validation
 #Set = 0 to accept all data
-RangeReq = 0.05 #max value - min value
-MaxReq = 0.080
+RangeReq = 0.15 #max value - min value
 start_time = RunTime.currentTime()#start-time
+Remove_invalid_data = True
 
 ##########Get Raw Data-set from Bioscreen CSV file############################
 csv_file = 'raw_plate_reader.csv' #full filename of CSV file stored in working directory
 number_of_rows_csv = dataIO.count_rows_CSV(csv_file)
 number_of_cols_csv = dataIO.count_columns_CSV(csv_file)
-csv_list_of_lists = dataIO.csv_list_of_lists(csv_file) #store data-set by columns as a list of lists
+original_csv_list_of_lists = dataIO.csv_list_of_lists(csv_file) #store data-set by columns as a list of lists
 if full_print == True:
-    dataIO.print_data_lists(csv_list_of_lists)
+    dataIO.print_data_lists(original_csv_list_of_lists)
 ##############################################################################
 
 #####|Google Sheet Setup|#####
@@ -257,12 +263,7 @@ gc = gspread.authorize(credentials)
 g_sheet = gc.open(google_sheet_name)
 #setup worksheet variables
 well_labels = g_sheet.worksheet('well_labels')
-#if 2nd worksheet(@index=1) doesn't exist, create it
-#####****************************************>>>>>>>>>CHANGE TO ROWS/COLS OF UPDATED CSV
-if g_sheet.get_worksheet(1) == None:
-    g_sheet.add_worksheet('well_data', number_of_rows_csv, number_of_cols_csv)
-#setup well_data worksheet object
-well_data = g_sheet.worksheet('well_data')
+
 ###############################
 
 #######Get Well Labels from Google Sheet######################################
@@ -273,7 +274,7 @@ if full_print == True:
 ##############################################################################
 
 #####Replace Headers#####
-updated_lists = dataCowboy.header_replacement(csv_list_of_lists, labels)
+updated_lists = dataCowboy.header_replacement(original_csv_list_of_lists, labels)
 if full_print == True:
     dataIO.print_data_lists(updated_lists)
 
@@ -305,7 +306,7 @@ for ls in updated_lists[1:]:
 print("#|Range |Min  |Max  |Mean  |First |Last |")
 #######################################
 
-########|Validation Check|##########
+########|Validation Check|##########<
 print("#####|Validation Check|####")
 #store index number of invalid data
 exclude_list = []
@@ -315,32 +316,68 @@ if RangeReq > 0 or MaxReq > 0:
         ##print(index, range_list[index], max_list[index])
         #skip index = 0
         if index > 0:
-            if range_list[index] > RangeReq and max_list[index] > MaxReq:
+            #Data check passes if either condition passes
+            #(change 'or' to 'and' for more stringent check)
+            if range_list[index] > RangeReq or max_list[index] > MaxReq:
                 ##print(index, "Pass")
                 pass_list.append(index)
             else:
-                print(index, "Fail")
+                if full_print == True:
+                    print(index, "Fail")
                 exclude_list.append(index)
-print("Failed Checks:", len(exclude_list))
-##print(exclude_list)
-####################################
 
-########|R subprocess|########
+failed_checks = len(exclude_list)
+print("Failed Checks:", failed_checks)
+##print(exclude_list)
+
+#Remove invalid data from 'updated list'
+if Remove_invalid_data == True:
+    #iterating and deleting in forward direction will break the loop after 1st del operation
+    for index, ls in reversed(list(enumerate(updated_lists))):
+        if index in exclude_list:
+            print(index, "Excluded")
+            del updated_lists[index]
+
+if full_print == True:
+    dataIO.print_data_lists(updated_lists)
+
+if Remove_invalid_data == True:
+    print('Data Excluded:', failed_checks, 'wells')
+else:
+    print('Data Excluded:', 'None')
+####################################>
+
+########|R subprocess|########<
 if Rsub == True:
     print("Rscript")
     #to be implemented
-##############################
+##############################>
 
 #######################################################
 
-
 #####Update Spreadsheet#####
+
+#Check if there is a worksheet at index 1
+wks1 = g_sheet.get_worksheet(1)
+if type(wks1) is gspread.models.Worksheet:
+    print("Worksheet @index 1")
+    print("Delete", g_sheet.sheet1)
+    g_sheet.del_worksheet(wks1)
+
+#if 2nd worksheet(@index=1) doesn't exist, create it
+#####****************************************>>>>>>>>>CHANGE TO ROWS/COLS OF UPDATED CSV
+number_of_cols = len(updated_lists)
+if g_sheet.get_worksheet(1) == None:
+    g_sheet.add_worksheet('well_data', number_of_rows_csv, 201)
+#setup well_data worksheet object
+well_data = g_sheet.worksheet('well_data')
+
+##########TO DO: Handle error that occurs when well_data sheet has less than 201 columns
 if full_sheet_update == True:
-    gsheet_update(updated_lists)
+    gsheet_update(updated_lists, number_of_cols)
 
 #######| END |########
 end_time = RunTime.currentTime()#start-time
 run_time = RunTime.calc_runTime(start_time, end_time)
 print("############|END|##########")
 print(run_time)
-
