@@ -239,6 +239,7 @@ Rsub = True
 #data must be greater than these values to pass validation
 #Set = 0 to accept all data
 RangeReq = 0.15 #max value - min value
+MaxReq = 0.095
 start_time = RunTime.currentTime()#start-time
 Remove_invalid_data = True
 
@@ -338,9 +339,6 @@ if Remove_invalid_data == True:
             print(index, "Excluded")
             del updated_lists[index]
 
-if full_print == True:
-    dataIO.print_data_lists(updated_lists)
-
 if Remove_invalid_data == True:
     print('Data Excluded:', failed_checks, 'wells')
 else:
@@ -375,6 +373,7 @@ well_data = g_sheet.worksheet('well_data')
 ##########TO DO: Handle error that occurs when well_data sheet has less than 201 columns
 if full_sheet_update == True:
     gsheet_update(updated_lists, number_of_cols)
+    print(well_data.updated)
 
 #######| END |########
 end_time = RunTime.currentTime()#start-time
