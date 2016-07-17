@@ -20,6 +20,7 @@ def calc_runTime(start, end):
 
 def pause(seconds_to_pause):
     time.sleep(seconds_to_pause)
+    return
 
 #start_time = currentTime()#Store script start-time
 #time.sleep(62)

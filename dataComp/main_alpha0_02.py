@@ -217,14 +217,14 @@ def gsheet_update(list_of_lists, num_cols):
             GN, GO, GP, GQ, GR, GS]
 
     # iterate through list_of_lists
-    #print(len(list_of_lists), len(A_GS[:num_cols]))
+    print( len(list_of_lists), "Columns to post" )
     for ls_index, (ls, col) in enumerate(zip( list_of_lists, A_GS[:num_cols] )):
         #print('a', ls_index)
         for cell_index, cell in enumerate(col):
             cell.value = ls[cell_index]
     #update google sheet by column
     update_count = 0
-    for col in A_GS[:num_cols]:
+    for col in A_GS[:num_cols]: #list slicing to loop correct number of times
         print('Column', update_count, 'posted')
         update_count += 1
         well_data.update_cells(col)
@@ -264,7 +264,8 @@ gc = gspread.authorize(credentials)
 g_sheet = gc.open(google_sheet_name)
 #setup worksheet variables
 well_labels = g_sheet.worksheet('well_labels')
-
+print("****************************")
+print(well_labels.title)
 ###############################
 
 #######Get Well Labels from Google Sheet######################################
@@ -315,7 +316,7 @@ pass_list = []
 if RangeReq > 0 or MaxReq > 0:
     for index in range(len(range_list)):
         ##print(index, range_list[index], max_list[index])
-        #skip index = 0
+        #skip index = 0 (string headers)
         if index > 0:
             #Data check passes if either condition passes
             #(change 'or' to 'and' for more stringent check)
@@ -343,6 +344,10 @@ if Remove_invalid_data == True:
     print('Data Excluded:', failed_checks, 'wells')
 else:
     print('Data Excluded:', 'None')
+
+###|Create updated CSV file|###
+dataIO.multiCol_CSV('updated_plate_reader.csv', updated_lists)
+
 ####################################>
 
 ########|R subprocess|########<
@@ -358,10 +363,13 @@ if Rsub == True:
 #Check if there is a worksheet at index 1
 wks1 = g_sheet.get_worksheet(1)
 if type(wks1) is gspread.models.Worksheet:
-    print("Worksheet @index 1")
-    print("Delete", g_sheet.sheet1)
-    g_sheet.del_worksheet(wks1)
-
+    print("Worksheet @index 1:", wks1.title)
+    if wks1.title == 'well_data':    #check the title of the worksheet
+        print("Delete", g_sheet.sheet1)
+        g_sheet.del_worksheet(wks1)
+    if wks1.title == 'well_labels':
+        print("****Error: Move well_labels worksheet to index 0 ")
+        full_sheet_update = False
 #if 2nd worksheet(@index=1) doesn't exist, create it
 #####****************************************>>>>>>>>>CHANGE TO ROWS/COLS OF UPDATED CSV
 number_of_cols = len(updated_lists)
@@ -371,6 +379,7 @@ if g_sheet.get_worksheet(1) == None:
 well_data = g_sheet.worksheet('well_data')
 
 ##########TO DO: Handle error that occurs when well_data sheet has less than 201 columns
+print("Update Google Sheet:", full_sheet_update)
 if full_sheet_update == True:
     gsheet_update(updated_lists, number_of_cols)
     print(well_data.updated)
