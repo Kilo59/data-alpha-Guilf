@@ -18,17 +18,11 @@ for (column in 2:length(dat1)) {
 }
 
 xrange <- (dat1$Time)
-yrange <- 
+yrange <- (data_range) 
 
-x <- c(1:5); y <- x # create some data 
-par(pch=22, col="red") # plotting symbol and color 
-par(mfrow=c(2,4)) # all plots on one page 
-opts = c("p","l","o","b") 
-for(i in 1:length(opts)){ 
-  heading = paste("type=",opts[i]) 
-  plot(x, y, type="n", main=heading) 
-  lines(x, y, type=opts[i]) 
-}
-
+# Simple Scatterplot
+attach(dat1)
+plot(Time, Well.Damn, main="Scatterplot Example", 
+  	xlab="Time", ylab="Optical Density ", type = "b")
 
 setwd(old_wd) #reset working directory
