@@ -360,10 +360,10 @@ if Rsub == True:
 
 #####Update Spreadsheet#####
 
-#Check if there is a worksheet at index 1
-wks1 = g_sheet.get_worksheet(1)
+#Check if there is a worksheet at index 2
+wks1 = g_sheet.get_worksheet(2)
 if type(wks1) is gspread.models.Worksheet:
-    print("Worksheet @index 1:", wks1.title)
+    print("Worksheet @index 2:", wks1.title)
     if wks1.title == 'well_data':    #check the title of the worksheet
         print("Delete", g_sheet.sheet1)
         g_sheet.del_worksheet(wks1)
