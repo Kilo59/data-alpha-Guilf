@@ -1,33 +1,18 @@
 #dataIO
 import csv
-import gspread
-############Remote Input/Output#######
-
-####Google Sheets authorization
-##INCOMPLETE!##
-'''
-class Google_Sheet(object):
-    auth_filename = 'Authorization.json'
-    scope = ['https://spreadsheets.google.com/feeds']
-    credentials = ServiceAccountCredentials.from_json_keyfile_name(auth_filename, scope)
-    gc = gspread.authorize(credentials)
-    def __init__(self, spreadsheet, worksheet1):
-        self.spreadsheet = spreadsheet
-        self.worksheet1 = worksheet1
-
-    def work_sheet(self):
-        g_sheet = gc.open(self.spreadsheet)
-        ws1 = g_sheet.worksheet(self.worksheet1)
-        return ws1
-
-    def count_columns():
-        number_of_columns = work_sheet.col_count
-        return number_of_columns
-'''
-##INCOMPLETE!##
+from configparser import SafeConfigParser
 
 #############Local Input/Output######
 
+###reading from Config file
+parser = SafeConfigParser()
+parser.read('config.ini')
+def get_tolerance(req_name):
+    tolerance = parser.getfloat('tolerance', req_name)
+    return tolerance
+def get_start_cond(condition_name):
+    condition = parser.getboolean('start_conditions', condition_name)
+    return condition
 ###CSV info gathering
 
 #modified from jamylak @StackOverflow
@@ -58,16 +43,6 @@ def firstRow_CSV_reader(string_filename):
         row_1_list = reader1.__next__()
     return row_1_list
 
-#not funtional
-'''
-def singleCol_CSV_reader(string_filename):
-    csv_as_list = []
-    with open(string_filename, newline='') as csvfile:
-        reader1 = csv.reader(csvfile, delimiter=',', quotechar='|')
-        for i in reader1:
-            csv_as_list.append(i)
-    return csv_as_list
-'''
 def skipRows_CSV_reader(string_filename, num_skiped_rows):
     csv_as_list = []
     with open(string_filename, newline='') as csvfile:
