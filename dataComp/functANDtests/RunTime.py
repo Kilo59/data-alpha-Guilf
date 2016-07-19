@@ -13,8 +13,14 @@ def currentTime():
 
 def calc_runTime(start, end):
     Time = end - start
+    seconds = Time
     if Time >= 1:
-        return 'RunTime: ' + str(Time) + ' second(s)'
+        if Time > 60:
+            minutes = int(Time / 60)
+            seconds = Time % 60
+            return 'RunTime: ' + str(minutes) + ' minute ' + str(seconds) + ' second'
+        else:
+            return 'RunTime: ' + str(Time) + ' second(s)'
     if Time < 1:
         return 'RunTime: <1 second'
 
