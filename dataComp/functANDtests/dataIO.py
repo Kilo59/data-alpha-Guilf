@@ -1,4 +1,5 @@
 #dataIO
+from functANDtests import RunTime
 import csv
 from configparser import SafeConfigParser
 
@@ -6,13 +7,22 @@ from configparser import SafeConfigParser
 
 ###reading from Config file
 parser = SafeConfigParser()
-parser.read('config.ini')
+parser.read('config.txt')
 def get_tolerance(req_name):
     tolerance = parser.getfloat('tolerance', req_name)
     return tolerance
 def get_start_cond(condition_name):
-    condition = parser.getboolean('start_conditions', condition_name)
-    return condition
+    condition = parser.get('start_conditions', condition_name)
+    if  condition.lower() == 'true' or condition.lower() == 'false' or condition == '1' or condition == '0':
+        condition = parser.getboolean('start_conditions', condition_name)
+        return condition
+    else:
+        return condition
+
+def get_R_options(r_option_name):
+    r_option = parser.getboolean('r_options', r_option_name)
+    return r_option
+
 ###CSV info gathering
 
 #modified from jamylak @StackOverflow
@@ -146,6 +156,47 @@ def doubleCol_CSV(filename, header_list, list_of_columns):
                 writer2.writerow([ list_of_columns[0][i],list_of_columns[1][i] ])
     return
 
+#####|Misc file output|#####
+def setup_r_grping(g_list):
+    #cleanup lists
+    lists = 10
+    for index, g in enumerate(g_list):
+        # remove empty values
+        for i in range(len(g)):
+            if g.count('') > 0:
+                del g[g.index('')]
+        if len(g) <= 1:
+            del g[g.index(g[0])]
+            lists -= 1
+    g_list = g_list[:lists]
+    group_list = [x for x in range(0, len(g_list))]
+    #remove header
+    for index, ls in enumerate(g_list):
+        group_list[index] = ls[0]
+        g_list[index] = ls[1:]
+    #setup dataframes for use in R
+    for grp_index, g in enumerate(g_list):
+        group_list[grp_index] += ' <- data.frame('
+    for grp_index, g in enumerate(g_list):
+        for ls_item in g:
+            group_list[grp_index] += ls_item+', '
+        group_list[grp_index] = group_list[grp_index][:len(group_list[grp_index])-2] +")"
+    return group_list
+
+def write_r_grping_file(list_of_columns):
+    group_list = setup_r_grping(list_of_columns)
+    #create file and overwrite old file
+    grping_file = 'grouping.R'
+    system_time = RunTime.system_time()
+    f = open(grping_file, 'w')
+    f.write("#file: "+grping_file+"\n#Time: "+RunTime.system_time())
+    f.close()
+    #open file and append dataframes
+    a = open(grping_file, 'a')
+    for group in group_list:
+        a.write('\n'+group)
+    a.close()
+    return
 ##########|Misc|#################
 
 #return an empty list of lists of size variable size

@@ -1,3 +1,5 @@
+import dataIO
+import RunTime
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials #to authorize GAPP access
 
@@ -29,9 +31,10 @@ group_list = []
 #ignore empty groups, append group names of the rest to a list
 for d in group_dict:
     for group_name in d:
-        print(group_name, d[group_name])
+        #print(group_name, d[group_name])
         if d[group_name] == '':
-            print("None")
+            pass
+            #print("None")
         else:
             if group_name not in group_list:
                 group_list.append(group_name)
@@ -39,7 +42,68 @@ for d in group_dict:
 print("**********")
 print(group_list)
 
+group_list = [group_list[x] for x in range(0, len(group_list)) if group_list[x] != 'Excluded']
 
+print(group_list)
+
+grping_file = 'grouping.R'
+system_time = RunTime.system_time()
+
+f = open(grping_file, 'w')
+f.write("#file: "+grping_file+"\n#Time: "+RunTime.system_time())
+f.close()
+
+g1 = well_grouping.col_values(1)
+g2 = well_grouping.col_values(2)
+g3 = well_grouping.col_values(3)
+g4 = well_grouping.col_values(4)
+g5 = well_grouping.col_values(5)
+g6 = well_grouping.col_values(6)
+g7 = well_grouping.col_values(7)
+g8 = well_grouping.col_values(8)
+g9 = well_grouping.col_values(9)
+g10 = well_grouping.col_values(10)
+
+g_list = [g1, g2, g3, g4, g5, g6, g7, g8, g9, g10]
+
+#cleanup lists
+lists = 10
+for index, g in enumerate(g_list):
+    # remove empty values
+    for i in range(len(g)):
+        if g.count('') > 0:
+            del g[g.index('')]
+    if len(g) <= 1:
+        del g[g.index(g[0])]
+        lists -= 1
+g_list = g_list[:lists]
+#remove header
+for index, ls in enumerate(g_list):
+    group_list[index] = ls[0]
+    g_list[index] = ls[1:]
+
+print(">")
+for g in g_list:
+    print(g)
+
+for grp_index, g in enumerate(g_list):
+    group_list[grp_index] += ' <- data.frame('
+
+for grp_index, g in enumerate(g_list):
+    for ls_item in g:
+        group_list[grp_index] += ls_item+', '
+    group_list[grp_index] = group_list[grp_index][:len(group_list[grp_index])-2] +")"
+
+print("*****>")
+
+print(">")
+for g in group_list:
+    print(g)
+
+a = open(grping_file, 'a')
+for group in group_list:
+    a.write('\n'+group)
+a.close()
 
 '''
 print(group_dict)
