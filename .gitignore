@@ -6,3 +6,5 @@ dataComp/functANDtests/__pycache__/dataIO.cpython-35.pyc
 dataComp/SequenceMatch.csv
 dataComp/Vibrio_cholerae.txt
 dataComp/functANDtests/task_test.py
+*.RData
+dataComp/.Rhistory

@@ -1,4 +1,4 @@
-install.packages("plotly")
+#install.packages("plotly")
 library(plotly)
 old_wd <- getwd()
 wd <- "C:/Users/goreg/OneDrive/Documents/GitHub/data-alpha-Guilf/dataComp"
@@ -25,4 +25,8 @@ attach(dat1)
 plot(Time, Well.Damn, main="Scatterplot Example", 
   	xlab="Time", ylab="Optical Density ", type = "b")
 
-setwd(old_wd) #reset working directory
+source("grouping.R")
+
+
+
+#setwd(old_wd) #reset working directory

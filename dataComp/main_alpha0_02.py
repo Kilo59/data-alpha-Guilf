@@ -229,34 +229,58 @@ def gsheet_update(list_of_lists, num_cols):
         update_count += 1
         well_data.update_cells(col)
     return
-
+def get_grouping_data():
+    g1 = well_grouping.col_values(1)
+    g2 = well_grouping.col_values(2)
+    g3 = well_grouping.col_values(3)
+    g4 = well_grouping.col_values(4)
+    g5 = well_grouping.col_values(5)
+    g6 = well_grouping.col_values(6)
+    g7 = well_grouping.col_values(7)
+    g8 = well_grouping.col_values(8)
+    g9 = well_grouping.col_values(9)
+    g10 = well_grouping.col_values(10)
+    g_list = [g1, g2, g3, g4, g5, g6, g7, g8, g9, g10]
+    return g_list
 ##############|Start|##########
 print("dataWrangle1.py")
 print("############|START|##########")
 full_print = True
-full_sheet_update = True
-Rsub = True
+full_sheet_update = dataIO.get_start_cond('post2google')
+input_csv = dataIO.get_start_cond('input_filename') #full filename of CSV file stored in working directory
+print('Input filename: ', input_csv)
+Rsub = dataIO.get_R_options("execute_r")
 #data must be greater than these values to pass validation
 #Set = 0 to accept all data
 RangeReq = dataIO.get_tolerance('rangeReq')
 MaxReq = dataIO.get_tolerance('maxReq')
-print('Tolerance: data well be ignored if it does not exceed these requirements')
+print('Tolerance: data will be ignored if it does not exceed these requirements')
 print('Range Requirement:', RangeReq)
 print('Max Value Requirement:', MaxReq)
 start_time = RunTime.currentTime()#start-time
 Remove_invalid_data = True
 grouping = True
+generate_r_grping_file = dataIO.get_R_options("gen_grping_file")
+print("Remove Invalid Data: ", Remove_invalid_data)
+print("R subprocess: ", Rsub)
+print("Group Data: ", grouping)
+print("Generate grouping.R file: ", generate_r_grping_file)
+print("Update Google Sheet: ", full_sheet_update)
 start = dataIO.get_start_cond('run')
+#*******TESTING******************TESTING**************#
+
+#******************END TESTING************************#
 if start == False:
-    print("**config.ini has \'run\' set to \'False\'**")
+    print("**config.txt has \'run\' set to \'False\'**")
     print("***STOPPING PROGRAM***")
     quit()
+else:
+    print('**proceeding with Script**')
 
 ##########Get Raw Data-set from Bioscreen CSV file############################
-csv_file = 'raw_plate_reader.csv' #full filename of CSV file stored in working directory
-number_of_rows_csv = dataIO.count_rows_CSV(csv_file)
-number_of_cols_csv = dataIO.count_columns_CSV(csv_file)
-original_csv_list_of_lists = dataIO.csv_list_of_lists(csv_file) #store data-set by columns as a list of lists
+number_of_rows_csv = dataIO.count_rows_CSV(input_csv)
+number_of_cols_csv = dataIO.count_columns_CSV(input_csv)
+original_csv_list_of_lists = dataIO.csv_list_of_lists(input_csv) #store data-set by columns as a list of lists
 ##############################################################################
 
 #####|Google Sheet Setup|#####
@@ -357,7 +381,9 @@ if full_print == True and Remove_invalid_data == True:
     print( exclude_list[int(len(exclude_list)/2):])
 ###|Create updated CSV file|###
 dataIO.multiCol_CSV('updated_plate_reader.csv', updated_lists)
-
+###|Create grouping.R file|###
+if generate_r_grping_file == True:
+    pass
 ####################################>
 
 ########|R subprocess|########<
@@ -400,18 +426,17 @@ well_data = g_sheet.worksheet('well_data')
 well_grouping = g_sheet.worksheet('well_grouping')
 
 ####|Grouping Begin|##
-#######TESTING DICTIONARY STRUCTURE
-if grouping == True:
-    group_dict = well_grouping.get_all_records(empty2zero = False, head = 1)
-
+if generate_r_grping_file == True:
+    dataIO.write_r_grping_file(get_grouping_data())
+    print('***|grouping.R UPDATED|***')
 ####|Grouping End|##
 
 ##########TO DO: Handle error that occurs when well_data sheet has less than 201 columns
-print("Update Google Sheet:", full_sheet_update)
 if full_sheet_update == True:
     gsheet_update(updated_lists, number_of_cols)
     print(well_data.updated)
-
+else:
+    print("*Set \'post2google = True\' to upload data to the Google Spreadsheet*")
 #######| END |########
 end_time = RunTime.currentTime()#start-time
 run_time = RunTime.calc_runTime(start_time, end_time)
