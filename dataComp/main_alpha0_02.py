@@ -246,7 +246,8 @@ def get_grouping_data():
 print("dataWrangle1.py")
 print("############|START|##########")
 full_print = True
-full_sheet_update = dataIO.get_start_cond('post2google')
+#TODO: fix config parser error that occurs when run from the command line, due to path not being explicitly set?
+full_sheet_update = dataIO.get_start_cond_bol('post2google')
 input_csv = dataIO.get_start_cond('input_filename') #full filename of CSV file stored in working directory
 print('Input filename: ', input_csv)
 Rsub = dataIO.get_R_options("execute_r")
@@ -311,7 +312,7 @@ updated_lists = dataCowboy.header_replacement(original_csv_list_of_lists, labels
 ########|Python Summary Data|##########
 #print summary data for every column, skip item 0 (the header)
 print("###|Summary Data|###")
-print("#    Range  | Min   Max      Mean   |    First Last    Name")
+print("#        Range  | Min   Max      Mean   |        First Last    Name")
 count = 1
 range_list = [0]
 min_list = [0]
@@ -339,7 +340,7 @@ for index, ls in enumerate(updated_lists[1:]):
     print(str(count) + '\t', range_val, '\t|', min_val, max_val, '\t', mean, '\t|\t', first, last, pass_fail, ls[0])
 
     count += 1
-print("#    Range  | Min   Max      Mean   |    First Last    Name")
+print("#        Range  | Min   Max      Mean   |        First Last    Name")
 #######################################
 
 ########|Validation Check|##########<
@@ -386,12 +387,6 @@ if generate_r_grping_file == True:
     pass
 ####################################>
 
-########|R subprocess|########<
-if Rsub == True:
-    print("Rscript")
-    #to be implemented
-##############################>
-
 #######################################################
 
 #####Update Spreadsheet#####
@@ -427,8 +422,16 @@ well_grouping = g_sheet.worksheet('well_grouping')
 
 ####|Grouping Begin|##
 if generate_r_grping_file == True:
+    group_names = dataIO.group_names(get_grouping_data())
+    print('Group names:', group_names)
     dataIO.write_r_grping_file(get_grouping_data())
     print('***|grouping.R UPDATED|***')
+
+########|R subprocess|########<
+#TODO: handle case where generate_r_grping_file = False but Rub = True
+if Rsub == True:
+    dataIO.exec_script('Rscript', 'plot_data.R', group_names)
+##############################>
 ####|Grouping End|##
 
 ##########TO DO: Handle error that occurs when well_data sheet has less than 201 columns

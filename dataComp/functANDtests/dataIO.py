@@ -1,6 +1,8 @@
 #dataIO
 from functANDtests import RunTime
 import csv
+import subprocess
+import os
 from configparser import SafeConfigParser
 
 #############Local Input/Output######
@@ -8,9 +10,15 @@ from configparser import SafeConfigParser
 ###reading from Config file
 parser = SafeConfigParser()
 parser.read('config.txt')
+#TODO fix errors when run from commandline
 def get_tolerance(req_name):
     tolerance = parser.getfloat('tolerance', req_name)
     return tolerance
+
+def get_start_cond_bol(condition_name):
+    condition = parser.getboolean('start_conditions', condition_name)
+    return condition
+#causing error when run from commandline
 def get_start_cond(condition_name):
     condition = parser.get('start_conditions', condition_name)
     if  condition.lower() == 'true' or condition.lower() == 'false' or condition == '1' or condition == '0':
@@ -157,6 +165,22 @@ def doubleCol_CSV(filename, header_list, list_of_columns):
     return
 
 #####|Misc file output|#####
+#return group names
+def group_names(g_list):
+    #cleanup lists
+    lists = 10
+    for index, g in enumerate(g_list):
+        # remove empty values
+        for i in range(len(g)):
+            if g.count('') > 0:
+                del g[g.index('')]
+        if len(g) <= 1:
+            del g[g.index(g[0])]
+            lists -= 1
+    g_list = g_list[:lists]
+    group_list = [g_list[x][0] for x in range(0, len(g_list))]
+    return group_list
+
 def setup_r_grping(g_list):
     #cleanup lists
     lists = 10
@@ -169,7 +193,7 @@ def setup_r_grping(g_list):
             del g[g.index(g[0])]
             lists -= 1
     g_list = g_list[:lists]
-    group_list = [x for x in range(0, len(g_list))]
+    group_list = [g_list[x][0] for x in range(0, len(g_list))]
     #remove header
     for index, ls in enumerate(g_list):
         group_list[index] = ls[0]
@@ -197,6 +221,23 @@ def write_r_grping_file(list_of_columns):
         a.write('\n'+group)
     a.close()
     return
+
+#######|Subprocess|######
+def exec_script(command, script_name, arg_list):
+    #define command and argument
+    current_directory = os.getcwd()
+    command = command
+    script = script_name
+    path2script = current_directory + '\\' + script
+    #build subprocess command
+    cmd = [command, path2script] + arg_list
+    print(cmd, "Finished")
+    return cmd
+def exec_script2(command, script_name, arg_list):
+    cmd = exec_script(command, script_name, arg_list)
+    #check_output will run command and store to result
+    x = subprocess.check_output(cmd, universal_newlines=True) #shell=True unecessary?
+    return x
 ##########|Misc|#################
 
 #return an empty list of lists of size variable size
