@@ -8,3 +8,4 @@ dataComp/Vibrio_cholerae.txt
 dataComp/functANDtests/task_test.py
 *.RData
 dataComp/.Rhistory
+*.RData
