@@ -279,9 +279,13 @@ else:
     print('**proceeding with Script**')
 
 ##########Get Raw Data-set from Bioscreen CSV file############################
+if dataIO.check_file_silent(input_csv) == True:
+	original_csv_list_of_lists = dataIO.csv_list_of_lists(input_csv) #store data-set by columns as a list of lists
+else:
+	dataIO.check_file(input_csv)
+	quit()
 number_of_rows_csv = dataIO.count_rows_CSV(input_csv)
 number_of_cols_csv = dataIO.count_columns_CSV(input_csv)
-original_csv_list_of_lists = dataIO.csv_list_of_lists(input_csv) #store data-set by columns as a list of lists
 ##############################################################################
 
 #####|Google Sheet Setup|#####

@@ -80,44 +80,57 @@ def readAll_CSV_reader(string_filename):
     return csv_as_list
 
 def csv_list_of_lists(string_filename):
-    headers = firstRow_CSV_reader(string_filename)
-    with open(string_filename) as csvfile:
-        reader3 = csv.DictReader(csvfile)
-        list1 = [[] for x in range(len(headers))]
-        for ls, header in zip(list1, headers):
-            ls.append(header)
-        for row in reader3:
-            #print(row['Time'], row['Well 101'], row['Well 300'])
-            for col_list in list1:
-                col_list.append(row[col_list[0]])
-    return list1
+    #check that file exists
+    if check_file(string_filename) == True:
+        headers = firstRow_CSV_reader(string_filename)
+        with open(string_filename) as csvfile:
+            reader3 = csv.DictReader(csvfile)
+            list1 = [[] for x in range(len(headers))]
+            for ls, header in zip(list1, headers):
+                ls.append(header)
+            for row in reader3:
+                #print(row['Time'], row['Well 101'], row['Well 300'])
+                for col_list in list1:
+                    col_list.append(row[col_list[0]])
+        return list1
+    else:
+        return []
+
+def check_file(filename):
+    filefound = True
+    try:
+        fh = open(filename, 'r')
+        fh.close()
+    except IOError:
+        print('**ERROR: CAN\'NT FIND FILE\n***MAKE SURE THE CONFIG SETTINGS MATCH THE EXPECTED FILENAME')
+        filefound = False
+    except:
+        print('**ERROR: UNKNOWN EXCEPTION OCCURED')
+        filefound = False
+    else:
+        print('*FILE', filename, 'FOUND')
+        filefound = True
+    return filefound
+
+def check_file_silent(filename):
+    filefound = True
+    try:
+        fh = open(filename, 'r')
+        fh.close()
+    except:
+        filefound = False
+    else:
+        filefound = True
+    return filefound
+
+def exit_without_file(filename):
+    filefound = check_file_silent(filename)
+    if filefound != True: #if check_file_silent recieves exception
+        quit()
+    return
 
 ########|CSV Output|########
 
-'''
-#length of each list must be the same
-def colList_to_rowList(list_of_columns):
-    #lists should have the same length
-    list_of_rows = list_n( len(list_of_columns[0]) )
-
-    list_of_rows[0].append(list_of_columns[0][0])
-    list_of_rows[0].append(list_of_columns[1][0])
-    list_of_rows[0].append(list_of_columns[2][0])
-
-    list_of_rows[1].append(list_of_columns[0][1])
-    list_of_rows[1].append(list_of_columns[1][1])
-    list_of_rows[1].append(list_of_columns[2][1])
-
-    list_of_rows[2].append(list_of_columns[0][2])
-    list_of_rows[2].append(list_of_columns[1][2])
-    list_of_rows[2].append(list_of_columns[2][2])
-
-    list_of_rows[3].append(list_of_columns[0][3])
-    list_of_rows[3].append(list_of_columns[1][3])
-    list_of_rows[3].append(list_of_columns[2][3])
-
-    return list_of_rows
-'''
 #**used in multiCol_CSV function**
 #takes a list of lists (where each list repesents a column of data)
 #sorts it into to a list of list where each list represents a row
@@ -181,6 +194,7 @@ def group_names(g_list):
     group_list = [g_list[x][0] for x in range(0, len(g_list))]
     return group_list
 
+#setup list used to create R grouping file
 def setup_r_grping(g_list):
     #cleanup lists
     lists = 10
@@ -199,12 +213,24 @@ def setup_r_grping(g_list):
         group_list[index] = ls[0]
         g_list[index] = ls[1:]
     #setup dataframes for use in R
+    dataframe = 'dat1$'
     for grp_index, g in enumerate(g_list):
-        group_list[grp_index] += ' <- data.frame('
+        group_list[grp_index] += ' <- data.frame('+dataframe+'Time, '
     for grp_index, g in enumerate(g_list):
         for ls_item in g:
-            group_list[grp_index] += ls_item+', '
+            group_list[grp_index] += dataframe+ls_item+', '
         group_list[grp_index] = group_list[grp_index][:len(group_list[grp_index])-2] +")"
+
+    #TODO add method to write a list of the dataframes
+    '''
+    #append 'data.frame list to group_list
+    df_list = 'df_list <- c('
+    print(g_list)
+    for group in g_list:
+        df_list+=group+', '
+    df_list = df_list[:len(df_list)-2] +')'
+    group_list.append(df_list)
+    '''
     return group_list
 
 def write_r_grping_file(list_of_columns):
@@ -233,6 +259,8 @@ def exec_script(command, script_name, arg_list):
     cmd = [command, path2script] + arg_list
     print(cmd, "Finished")
     return cmd
+
+#relies on result of exec_script
 def exec_script2(command, script_name, arg_list):
     cmd = exec_script(command, script_name, arg_list)
     #check_output will run command and store to result
@@ -240,7 +268,7 @@ def exec_script2(command, script_name, arg_list):
     return x
 ##########|Misc|#################
 
-#return an empty list of lists of size variable size
+#return an empty list of lists of variable size
 def list_n(size_of_list):
     ls = [[] for i in range(size_of_list)]
     return ls
