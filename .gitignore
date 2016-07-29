@@ -10,5 +10,5 @@ dataComp/functANDtests/task_test.py
 dataComp/.Rhistory
 *.RData
 *.Rproj
-dataComp/.Rproj.user
+dataComp/.Rproj.user/*
 dataComp/3point.csv
