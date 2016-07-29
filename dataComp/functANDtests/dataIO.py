@@ -193,7 +193,7 @@ def setup_ggploter(list_of_items_to_plot):
     list_of_plots = group_names(list_of_items_to_plot)
     list_of_items = group_items(list_of_items_to_plot)
     ls_of_strings = []
-    color = ['black', 'red', 'blue', 'orange', 'green']
+    color = ['black', 'red', 'blue', 'orange', 'green', 'darkorchid1', 'aquamarine', 'azure', 'darkgoldenrod', 'firebrick', 'grey']
     plot_list_str = 'plot_list <-c('
     for group_index, group in enumerate(list_of_plots):
         string1 = 'g'+str(group_index+1)+' <- ggplot()+'
