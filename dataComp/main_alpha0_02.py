@@ -428,11 +428,13 @@ if generate_r_grping_file == True:
     g_list = get_grouping_data()
     group_names = dataIO.group_names(g_list)
     print('Group names:', group_names)
-#########################################################TESTING<
-    print('**************TESTING*********************')
-    print(dataIO.group_items(g_list))
-#########################################################TESTING>
     dataIO.write_r_grping_file(g_list)
+#########################################################TESTING<
+    print('**************TESTING********************')
+    #print(dataIO.group_items(g_list))
+    dataIO.write_ggploter('grouping.R', g_list)
+    print('************END TESTING******************')
+#########################################################TESTING>
     print('***|grouping.R UPDATED|***')
 
 ########|R subprocess|########<

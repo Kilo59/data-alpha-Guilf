@@ -1,6 +1,6 @@
 #dataIO
 from functANDtests import RunTime
-#import RunTime
+#import RunTime #when running tests in functANDtests folder
 import csv
 import subprocess
 import os
@@ -189,8 +189,36 @@ def append_list_of_string(filename, ls):
         write_line_a(filename, item)
     return
 #take list of group names, create r code for ggplots of each group
-def ggploter(list_of_plots):
-    pass
+def setup_ggploter(list_of_items_to_plot):
+    list_of_plots = group_names(list_of_items_to_plot)
+    list_of_items = group_items(list_of_items_to_plot)
+    ls_of_strings = []
+    color = ['black', 'red', 'blue', 'orange', 'green']
+    for group_index, group in enumerate(list_of_plots):
+        string1 = 'g'+str(group_index+1)+' <- ggplot()+'
+        ls_of_strings.append(string1)
+        for index, well in enumerate(list_of_items[group_index]):
+            string_point = 'geom_point(data = dat1, aes(Time, dat1$'+str(well)+'), color = \''+str(color[index])+'\') +'
+            print(string_point)
+            ls_of_strings.append(string_point)
+        #setup ggplot labs() function
+        string_labs='labs(title = '+str(group)+', x= \'Time\', y = \'Optical Density\') +'
+        ls_of_strings.append(string_labs)
+        #setup ggplot theme() function
+        string_theme='theme( axis.text.x= element_text(angle = 80, size = 7, vjust = 0.5) )\n'
+        ls_of_strings.append(string_theme)
+        #setup image_name variable *needed for ggsave()
+        str_image_name='image_name <- paste(\''+str(group)+'\', \'.png\', sep = \'\')'
+        ls_of_strings.append(str_image_name)
+        #setup ggplot ggsave() function
+        string_ggsave='ggsave(image_name, width = 22, height = 8)\n'
+        ls_of_strings.append(string_ggsave)
+    return ls_of_strings
+def write_ggploter(filename, list_of_items_to_plot):
+    write_line_a(filename, '\n\n####ggplots####')
+    ls_of_strings = setup_ggploter(list_of_items_to_plot)
+    append_list_of_string(filename, ls_of_strings)
+    print('*',filename,': ggplots created')
     return
 #return group names
 def group_names(g_list):
@@ -202,7 +230,7 @@ def group_names(g_list):
             if g.count('') > 0:
                 del g[g.index('')]
         if len(g) <= 1:
-            del g[g.index(g[0])]
+            #del g[g.index(g[0])]
             lists -= 1
     g_list = g_list[:lists]
     group_list = [g_list[x][0] for x in range(0, len(g_list))]
@@ -213,14 +241,14 @@ def group_items(g_list):
     lists = 10
     for index, g in enumerate(g_list):
         # remove empty values
-        print(index, g) #Testing
+        #print(index, g) #Testing
         for i in range(len(g)):
             if g.count('') > 0:
                 del g[g.index('')]
         if len(g) <= 1:
-            print( '*'+str(g) )
+            #print( '*'+str(g) )
             #del g[g.index(g[0])]
-            print('*DELETE')
+            #print('*DELETE')
             lists -= 1
     g_list = g_list[:lists]
     group_list = [g_list[x][0] for x in range(0, len(g_list))]
@@ -231,23 +259,8 @@ def group_items(g_list):
     return g_list
 #setup list used to create R grouping file
 def setup_r_grping(g_list):
-    #cleanup lists
-    lists = 10
-    for index, g in enumerate(g_list):
-        # remove empty values
-        for i in range(len(g)):
-            if g.count('') > 0:
-                del g[g.index('')]
-        if len(g) <= 1:
-            #print(g[g.index(g[0])])
-            #del g[g.index(g[0])]
-            lists -= 1
-    g_list = g_list[:lists]
-    group_list = [g_list[x][0] for x in range(0, len(g_list))]
-    #remove header
-    for index, ls in enumerate(g_list):
-        group_list[index] = ls[0]
-        g_list[index] = ls[1:]
+    group_list = group_names(g_list)
+    g_list = group_items(g_list)
     #setup dataframes for use in R
     dataframe = 'dat1$'
     for grp_index, g in enumerate(g_list):
