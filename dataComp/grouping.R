@@ -1,5 +1,5 @@
 #file: grouping.R
-#Time: 14:51:47
+#Time: 15:53:4
 Group_16 <- data.frame(dat1$Time, dat1$Control, dat1$Well_41, dat1$Well_51, dat1$Well_61, dat1$Well_71)
 Group_23 <- data.frame(dat1$Time, dat1$Control, dat1$Well_121, dat1$Well_151, dat1$Well_31)
 Group_32 <- data.frame(dat1$Time, dat1$Control, dat1$Well_122, dat1$Well_31)
@@ -49,3 +49,5 @@ theme( axis.text.x= element_text(angle = 80, size = 7, vjust = 0.5) )
 image_name <- paste('Group_4', '.png', sep = '')
 ggsave(image_name, width = 22, height = 8)
 
+####plot_list vector####
+plot_list <-c('g1', 'g2', 'g3', 'g4')
