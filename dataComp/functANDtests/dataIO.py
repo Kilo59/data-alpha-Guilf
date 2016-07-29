@@ -199,7 +199,7 @@ def setup_ggploter(list_of_items_to_plot):
         ls_of_strings.append(string1)
         for index, well in enumerate(list_of_items[group_index]):
             string_point = 'geom_point(data = dat1, aes(Time, dat1$'+str(well)+'), color = \''+str(color[index])+'\') +'
-            print(string_point)
+            #print(string_point) #test print
             ls_of_strings.append(string_point)
         #setup ggplot labs() function
         string_labs='labs(title = '+str(group)+', x= \'Time\', y = \'Optical Density\') +'
@@ -269,17 +269,6 @@ def setup_r_grping(g_list):
         for ls_item in g:
             group_list[grp_index] += dataframe+ls_item+', '
         group_list[grp_index] = group_list[grp_index][:len(group_list[grp_index])-2] +")"
-
-    #TODO add method to write a list of the dataframes
-    '''
-    #append 'data.frame list to group_list
-    df_list = 'df_list <- c('
-    print(g_list)
-    for group in g_list:
-        df_list+=group+', '
-    df_list = df_list[:len(df_list)-2] +')'
-    group_list.append(df_list)
-    '''
     return group_list
 
 def write_r_grping_file(list_of_columns):

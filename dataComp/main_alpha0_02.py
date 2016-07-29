@@ -429,18 +429,15 @@ if generate_r_grping_file == True:
     group_names = dataIO.group_names(g_list)
     print('Group names:', group_names)
     dataIO.write_r_grping_file(g_list)
-#########################################################TESTING<
-    print('**************TESTING********************')
     #print(dataIO.group_items(g_list))
     dataIO.write_ggploter('grouping.R', g_list)
-    print('************END TESTING******************')
-#########################################################TESTING>
     print('***|grouping.R UPDATED|***')
 
 ########|R subprocess|########<
 #TODO: handle case where generate_r_grping_file = False but Rub = True
 if Rsub == True:
-    dataIO.exec_script('Rscript', 'plot_data.R', group_names)
+    print('****|Rscript plot_data.R EXECUTING|****')
+    dataIO.exec_script2('Rscript', 'plot_data.R', group_names)
 ##############################>
 ####|Grouping End|##>
 

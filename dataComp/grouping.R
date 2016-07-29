@@ -1,5 +1,4 @@
 #file: grouping.R
-#Time: 13:32:52
 Group_16 <- data.frame(dat1$Time, dat1$Control, dat1$Well_41, dat1$Well_51, dat1$Well_61, dat1$Well_71)
 Group_23 <- data.frame(dat1$Time, dat1$Control, dat1$Well_121, dat1$Well_151, dat1$Well_31)
 Group_32 <- data.frame(dat1$Time, dat1$Control, dat1$Well_122, dat1$Well_31)
