@@ -415,7 +415,6 @@ if type(wks2) is gspread.models.Worksheet:
         print("****Error: Move 'well_labels' worksheet to index 0 ")
         full_sheet_update = False
 #if 2nd worksheet(@index=1) doesn't exist, create it
-#####****************************************>>>>>>>>>CHANGE TO ROWS/COLS OF UPDATED CSV
 number_of_cols = len(updated_lists)
 if g_sheet.get_worksheet(2) == None:
     g_sheet.add_worksheet('well_data', number_of_rows_csv, 201)
@@ -424,11 +423,16 @@ if g_sheet.get_worksheet(2) == None:
 well_data = g_sheet.worksheet('well_data')
 well_grouping = g_sheet.worksheet('well_grouping')
 
-####|Grouping Begin|##
+####|Grouping Begin|##<
 if generate_r_grping_file == True:
-    group_names = dataIO.group_names(get_grouping_data())
+    g_list = get_grouping_data()
+    group_names = dataIO.group_names(g_list)
     print('Group names:', group_names)
-    dataIO.write_r_grping_file(get_grouping_data())
+#########################################################TESTING<
+    print('**************TESTING*********************')
+    print(dataIO.group_items(g_list))
+#########################################################TESTING>
+    dataIO.write_r_grping_file(g_list)
     print('***|grouping.R UPDATED|***')
 
 ########|R subprocess|########<
@@ -436,7 +440,7 @@ if generate_r_grping_file == True:
 if Rsub == True:
     dataIO.exec_script('Rscript', 'plot_data.R', group_names)
 ##############################>
-####|Grouping End|##
+####|Grouping End|##>
 
 ##########TO DO: Handle error that occurs when well_data sheet has less than 201 columns
 if full_sheet_update == True:

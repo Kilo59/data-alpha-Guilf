@@ -1,5 +1,6 @@
 #dataIO
 from functANDtests import RunTime
+#import RunTime
 import csv
 import subprocess
 import os
@@ -163,7 +164,6 @@ def singleCol_CSV(string_filename, string_header, item_list):
             writer1.writerow([item_list[i]])
     return
 
-
 #Columns must be past be passed in as a list of lists, each with the same length
 def doubleCol_CSV(filename, header_list, list_of_columns):
     with open(filename, 'w', newline='') as csvfile:
@@ -178,6 +178,20 @@ def doubleCol_CSV(filename, header_list, list_of_columns):
     return
 
 #####|Misc file output|#####
+#TODO write functions to write to file line by line
+#writes string to file
+def write_line_a(filename, string):
+    with open(filename, 'a') as f:
+        f.write(string+'\n')
+    return
+def append_list_of_string(filename, ls):
+    for item in ls:
+        write_line_a(filename, item)
+    return
+#take list of group names, create r code for ggplots of each group
+def ggploter(list_of_plots):
+    pass
+    return
 #return group names
 def group_names(g_list):
     #cleanup lists
@@ -193,7 +207,28 @@ def group_names(g_list):
     g_list = g_list[:lists]
     group_list = [g_list[x][0] for x in range(0, len(g_list))]
     return group_list
-
+#return list of wells within groups (absent the group_name header)
+def group_items(g_list):
+    #cleanup lists
+    lists = 10
+    for index, g in enumerate(g_list):
+        # remove empty values
+        print(index, g) #Testing
+        for i in range(len(g)):
+            if g.count('') > 0:
+                del g[g.index('')]
+        if len(g) <= 1:
+            print( '*'+str(g) )
+            #del g[g.index(g[0])]
+            print('*DELETE')
+            lists -= 1
+    g_list = g_list[:lists]
+    group_list = [g_list[x][0] for x in range(0, len(g_list))]
+    #remove header
+    for index, ls in enumerate(g_list):
+        group_list[index] = ls[0]
+        g_list[index] = ls[1:]
+    return g_list
 #setup list used to create R grouping file
 def setup_r_grping(g_list):
     #cleanup lists
@@ -204,7 +239,8 @@ def setup_r_grping(g_list):
             if g.count('') > 0:
                 del g[g.index('')]
         if len(g) <= 1:
-            del g[g.index(g[0])]
+            #print(g[g.index(g[0])])
+            #del g[g.index(g[0])]
             lists -= 1
     g_list = g_list[:lists]
     group_list = [g_list[x][0] for x in range(0, len(g_list))]
