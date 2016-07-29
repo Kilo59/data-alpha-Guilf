@@ -202,7 +202,7 @@ def setup_ggploter(list_of_items_to_plot):
             #print(string_point) #test print
             ls_of_strings.append(string_point)
         #setup ggplot labs() function
-        string_labs='labs(title = '+str(group)+', x= \'Time\', y = \'Optical Density\') +'
+        string_labs='labs(title = \''+str(group)+'\', x= \'Time\', y = \'Optical Density\') +'
         ls_of_strings.append(string_labs)
         #setup ggplot theme() function
         string_theme='theme( axis.text.x= element_text(angle = 80, size = 7, vjust = 0.5) )\n'
