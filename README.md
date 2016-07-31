@@ -14,9 +14,23 @@ Allows for users with minimal to no knowledge of programming to import large raw
 * [Configuration Settings]()
 
 ##Example
-####Input data: Bioscreen derived .CSV file 
-####Output: [Spreadsheet](https://docs.google.com/spreadsheets/d/1fJhE1hOMqVvf5T8YHxRATOQ8QHKfujZRym2wk-tYq4I/pubhtml "Output Sheet") | [Plotly: ggplot](https://dashboards.ly/ua-3iqBAQDFa93xVVHraRB3Tm "Plotly Dashboard")
-#####[Create Plotly Account](https://plot.ly/)
+####Input data: 
+* BioscreenC derived .CSV file
+* Well names
+* Well groupings
+
+![CSVexample]()
+
+![labelEx]()
+
+![groupingEx]()
+
+####Output: 
+ * Updated Google Spreadsheet 
+ * [Plotly ggplots](https://dashboards.ly/ua-3iqBAQDFa93xVVHraRB3Tm "Plotly Dashboard") 
+ * updated CSV file
+ * dynamically generated R script
+ * ggplot png files
 
 ###Plate-reader Wells
 ####[Well Label-Replacement Sheet](https://docs.google.com/spreadsheets/d/1fJhE1hOMqVvf5T8YHxRATOQ8QHKfujZRym2wk-tYq4I/pubhtml)
