@@ -10,6 +10,7 @@ Allows for users with minimal to no knowledge of programming to import large raw
 * [Installation]()
  * [Scheduler]()
  * [Spread Sheet]()
+ * [plotly]()
 * [Configuration Settings]()
 
 ##Example
@@ -42,5 +43,7 @@ Allows for users with minimal to no knowledge of programming to import large raw
 ####Setup Task Scheduler/Cron job (optional) 
 
 ####Spread Sheet Setup
+
+####Plotly Setup
 
 ##Configuration Settings
