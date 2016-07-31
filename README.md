@@ -32,6 +32,14 @@ Allows for users with minimal to no knowledge of programming to import large raw
  * dynamically generated R script
  * ggplot png files
 
+![Updated Google Spreadsheet]()
+
+![PlotlyEx]()
+
+![RscriptEx]()
+
+![local_fileEx]()
+
 ###Plate-reader Wells
 ####[Well Label-Replacement Sheet](https://docs.google.com/spreadsheets/d/1fJhE1hOMqVvf5T8YHxRATOQ8QHKfujZRym2wk-tYq4I/pubhtml)
 ![Well Guide](https://github.com/SpaceTuna8/data-alpha-Guilf/blob/master/Microplate_simple.PNG?raw=true)
