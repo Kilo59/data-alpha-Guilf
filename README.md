@@ -15,3 +15,19 @@ Weekly(bi-weekly) meeting with Faculty advisors to demonstrate progress, refine 
 ####[Well Label-Replacement Sheet](https://docs.google.com/spreadsheets/d/1fJhE1hOMqVvf5T8YHxRATOQ8QHKfujZRym2wk-tYq4I/pubhtml)
 ![Well Guide](https://github.com/SpaceTuna8/data-alpha-Guilf/blob/master/Microplate_simple.PNG?raw=true)
   
+##Installation 
+* [Obtain OAuth2 credentials from Google Developers Console](http://gspread.readthedocs.io/en/latest/oauth2.html) (Steps 1-4)
+* Setup Google Spreadsheet
+* Download Zipfile
+  * Place JSON authorization file in the same directory as main.py
+  * Check config.ini preferences
+    * Set desired preferences, tolerances 
+    * Insert plotly credentials (username and api key) 
+* [Install & Add to PATH R](https://cran.r-project.org/mirrors.html)
+* [Install & Add to PATH Python35](https://www.python.org/ftp/python/3.5.2/python-3.5.2.exe)
+  * Install python modules gspread & oauth2client
+
+####To Install python modules on Windows:
+1. Run commandprompt
+2. python -m pip install gspread
+3. python -m pip install oauth2client
