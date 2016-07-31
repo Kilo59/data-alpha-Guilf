@@ -1,9 +1,13 @@
-# Bioscreen Data Assistant
+# BioscreenC Data Assistant
 Automated Data Analyzer: Python-Google Spreadsheet-R pipeline
 ##What is this?
-A data processing/analytics platform to process/compute data stored locally and in Google Cloud Applications and output to the web for remote access.  
+A data analytics platform to automate the computation of data stored locally and in Google Cloud Applications and output to the web for remote access.  
 
 Allows for users with minimal to no knowledge of programming to import large raw csv datasets, automate computations, analysis, visualizations, add their own specialized computational functions and share their results. 
+
+###Index
+* [Example](https://github.com/SpaceTuna8/data-alpha-Guilf/tree/alpha_stable#example)
+* [Installation](https://github.com/SpaceTuna8/data-alpha-Guilf/tree/alpha_stable#installation)
 
 ##Example
 ####Input data: Bioscreen derived .CSV file 
