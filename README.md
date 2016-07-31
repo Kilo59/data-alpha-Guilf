@@ -8,6 +8,8 @@ Allows for users with minimal to no knowledge of programming to import large raw
 ###Index
 * [Example]()
 * [Installation]()
+ * [Scheduler]()
+ * [Spread Sheet]()
 * [Configuration Settings]()
 
 ##Example
