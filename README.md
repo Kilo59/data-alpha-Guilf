@@ -22,7 +22,7 @@ Weekly(bi-weekly) meeting with Faculty advisors to demonstrate progress, refine 
   * Place JSON authorization file in the same directory as main.py
   * Check config.ini preferences
     * Set desired preferences, tolerances 
-    * Insert plotly credentials (username and api key) 
+    * Insert [plotly credentials (username and api key)](https://plot.ly/)  
 * [Install & Add to PATH R](https://cran.r-project.org/mirrors.html)
 * [Install & Add to PATH Python35](https://www.python.org/ftp/python/3.5.2/python-3.5.2.exe)
   * Install python modules gspread & oauth2client
